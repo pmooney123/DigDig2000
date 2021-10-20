@@ -7,6 +7,7 @@ ALL RIGHTS RESERVED BY DEVELOPERS BITCH
 
 
 //** CHANGE LOG **//
+
 Added canvas and player location
 Added drill triangle
 
