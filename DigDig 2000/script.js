@@ -4,6 +4,25 @@ document.addEventListener("keyup", keyUpHandler, false);
 
 const canvas = document.getElementById('myCanvas')
 
+var map = {
+    columns: 8,
+    rows: 8,
+    tileSize: 15,
+    tiles: [],
+    getTile: function (column, row) {
+        return this.tiles[row * map.columns + column];
+    }
+};
+function initMap() {
+    for (let c = 0; c < map.rows; c++) {
+        for (let z = 0; z < map.columns; z++) {
+            map.tiles.push(getRandomInt(3)+1)
+        }
+    }
+}
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
 function keyDownHandler(e) {
     if ("code" in e) {
         switch(e.code) {
@@ -116,10 +135,11 @@ var rightPressed = false
 var upPressed = false
 var downPressed = false
 let count = 1
-let playerDirection = 'up';
+let playerDirection = 'up'
+let camera = {x: 50, y: 50}
 
 function startGame() {
-
+    initMap()
     setInterval(requestAnimationFrame(draw), 100);
 
 }
@@ -157,14 +177,37 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     //draw shit
+
+    for (var column = 0; column < map.columns; column++) {
+      for (var row = 0; row < map.rows; row++) {
+        var tile = map.getTile(column, row);
+        var x = column * map.tileSize;
+        var y = row * map.tileSize;
+
+        ctx.fillStyle = "white"
+        if (tile == 1) {
+            ctx.fillStyle = "red"
+        } else
+        if (tile == 2) {
+            ctx.fillStyle = "blue"
+        } else
+        if (tile == 3) {
+            ctx.fillStyle = "green"
+        }
+
+        ctx.fillRect(x, y, x + 15, y + 15)
+
+      }
+    } //draw tiles
+
+
+    //draw player
+    ctx.fillStyle = "black"
     drawPlayerTriangle(ctx)
 
-
-
-    ctx.font = "20px Georgia";
+    ctx.fillStyle = "black"
     ctx.beginPath();
     ctx.arc(playerX, playerY, 5, 0, 2 * Math.PI);
-
     ctx.fill();
 
 
